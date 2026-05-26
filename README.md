@@ -1,4 +1,4 @@
-# Mercado Simples
+# Meu Comércio
 
 Sistema simples de controle de estoque e vendas para pequenos mercados e comércios familiares.
 
