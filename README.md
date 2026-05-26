@@ -63,7 +63,7 @@ O sistema será desenvolvido pensando em:
 # Estrutura do Projeto
 
 ```bash
-frontend/
-backend/
+client/
 database/
 docs/
+server/
