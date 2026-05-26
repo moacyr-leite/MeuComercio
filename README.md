@@ -4,7 +4,7 @@ Sistema simples de controle de estoque e vendas para pequenos mercados e comérc
 
 ## Objetivo
 
-O Mercado Simples foi criado para ajudar pequenos comerciantes a controlarem produtos, estoque e movimentações de forma prática e intuitiva.
+O Meu Comércio foi criado para ajudar pequenos comerciantes a controlarem produtos, estoque e movimentações de forma prática e intuitiva.
 
 O sistema é focado em:
 - simplicidade,
