@@ -1,0 +1,25 @@
+{
+  "name": "meucomercio",
+  "version": "1.0.0",
+  "description": "Sistema simples de controle de estoque e vendas para pequenos mercados e comércios familiares.",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm run dev --prefix backend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moacyr-leite/MeuComercio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moacyr-leite/MeuComercio/issues"
+  },
+  "homepage": "https://github.com/moacyr-leite/MeuComercio#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
