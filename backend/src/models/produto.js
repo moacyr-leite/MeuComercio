@@ -34,12 +34,17 @@ export function validateProduto(data) {
 }
 
 export function buildProduto(data) {
-  return {
-    id: data.id ? String(data.id) : undefined,
+  const produto = {
     codigoBarras: String(data.codigoBarras || ''),
     nome: String(data.nome || ''),
     quantidadeAtual: Number(data.quantidadeAtual || 0),
     precoCompra: Number(data.precoCompra || 0),
     precoVenda: Number(data.precoVenda || 0),
   };
+
+  if (data.id) {
+    produto.id = String(data.id);
+  }
+
+  return produto;
 }

@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { randomUUID } from 'crypto';
 import { initializeDatabase, getDatabasePath } from '../database/index.js';
+import { seedDefaultUser } from './controllers/authController.js';
 
 let database = null;
 
@@ -16,10 +17,38 @@ async function initialize() {
   try {
     initializeDatabase();
     loadDatabase();
+    ensureSchema();
+    await seedDefaultUser();
     return true;
   } catch (error) {
     console.error('❌ Erro ao inicializar banco de dados:', error.message);
     return false;
+  }
+}
+
+function ensureSchema() {
+  let changed = false;
+
+  if (!database.usuarios) {
+    database.usuarios = [];
+    changed = true;
+  }
+
+  for (const tableName of ['produtos', 'movimentacoes', 'usuarios']) {
+    if (!database[tableName]) {
+      continue;
+    }
+
+    for (const record of database[tableName]) {
+      if (!record.id) {
+        record.id = String(randomUUID());
+        changed = true;
+      }
+    }
+  }
+
+  if (changed) {
+    saveDatabase();
   }
 }
 
@@ -134,7 +163,7 @@ function delete_(tableName, id) {
     throw new Error(`Tabela "${tableName}" não existe`);
   }
 
-  const index = database[tableName].findIndex((item) => item.id === id);
+  const index = database[tableName].findIndex((item) => String(item.id) === String(id));
   if (index === -1) {
     throw new Error(`Registro com ID ${id} não encontrado em "${tableName}"`);
   }

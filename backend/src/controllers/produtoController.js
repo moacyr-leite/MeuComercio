@@ -9,6 +9,14 @@ function handleError(res, error, status = 500) {
   res.status(status).json({ sucesso: false, erro: error.message || String(error) });
 }
 
+function codigoBarrasEmUso(codigoBarras, excludeId = null) {
+  const produtos = dbController.getAll('produtos');
+  return produtos.some(
+    (produto) =>
+      produto.codigoBarras === String(codigoBarras) && String(produto.id) !== String(excludeId),
+  );
+}
+
 export function getAllProdutos(req, res) {
   try {
     const produtos = dbController.getAll('produtos');
@@ -41,6 +49,10 @@ export function createProduto(req, res) {
       return res.status(400).json({ sucesso: false, erros: validationErrors });
     }
 
+    if (codigoBarrasEmUso(produtoData.codigoBarras)) {
+      return res.status(400).json({ sucesso: false, erro: 'Código de barras já cadastrado' });
+    }
+
     const novoProduto = dbController.insert('produtos', produtoData);
     res.status(201).json({ sucesso: true, mensagem: 'Produto criado com sucesso', dados: novoProduto });
   } catch (error) {
@@ -65,6 +77,17 @@ export function updateProduto(req, res) {
     if (quantidadeAtual !== undefined) dadosAtualizacao.quantidadeAtual = Number(quantidadeAtual);
     if (precoCompra !== undefined) dadosAtualizacao.precoCompra = Number(precoCompra);
     if (precoVenda !== undefined) dadosAtualizacao.precoVenda = Number(precoVenda);
+
+    const produtoMesclado = buildProduto({ ...produtoExistente, ...dadosAtualizacao });
+    const validationErrors = validateProduto(produtoMesclado);
+
+    if (validationErrors.length > 0) {
+      return res.status(400).json({ sucesso: false, erros: validationErrors });
+    }
+
+    if (dadosAtualizacao.codigoBarras && codigoBarrasEmUso(dadosAtualizacao.codigoBarras, id)) {
+      return res.status(400).json({ sucesso: false, erro: 'Código de barras já cadastrado' });
+    }
 
     const produtoAtualizado = dbController.update('produtos', id, dadosAtualizacao);
     res.json({ sucesso: true, mensagem: 'Produto atualizado com sucesso', dados: produtoAtualizado });

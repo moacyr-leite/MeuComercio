@@ -46,8 +46,7 @@ export function validateMovimentacao(data) {
 }
 
 export function buildMovimentacao(data) {
-  return {
-    id: data.id ? String(data.id) : undefined,
+  const movimentacao = {
     tipo: data.tipo,
     dataHora: new Date(data.dataHora).toISOString(),
     itens: data.itens.map((item) => ({
@@ -56,4 +55,10 @@ export function buildMovimentacao(data) {
       precoUnitario: Number(item.precoUnitario),
     })),
   };
+
+  if (data.id) {
+    movimentacao.id = String(data.id);
+  }
+
+  return movimentacao;
 }

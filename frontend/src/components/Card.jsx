@@ -1,4 +1,4 @@
-function Card({ title, subtitle, description, value, imageLabel }) {
+function Card({ title, subtitle, description, value, imageLabel, actions }) {
   return (
     <article className="card">
       <div className="card-image" aria-hidden="true">
@@ -11,6 +11,7 @@ function Card({ title, subtitle, description, value, imageLabel }) {
         </div>
         {subtitle && <p className="card-subtitle">{subtitle}</p>}
         {description && <p className="card-text">{description}</p>}
+        {actions && <div className="card-actions">{actions}</div>}
       </div>
     </article>
   );

@@ -24,9 +24,10 @@ O sistema é focado em:
 ## Backend
 - Node.js
 - Express
+- JWT para autenticação
 
 ## Banco de Dados
-- Ainda não definido / em desenvolvimento
+- Arquivo JSON local (`backend/data/database.json`)
 
 ---
 
@@ -38,8 +39,7 @@ O sistema é focado em:
 - Histórico de movimentações
 - Login de usuários
 - Busca rápida
-
-> Observação: a implementação completa dessas funcionalidades está em andamento.
+- Dashboard e relatórios com dados reais
 
 ---
 
@@ -80,6 +80,13 @@ npm run backend    # inicia o backend com Node/Express
 npm run dev        # inicia frontend e backend em paralelo
 ```
 
+Acesse o frontend em `http://localhost:5173` e faça login com:
+
+- **Email:** `admin@meucomercio.local`
+- **Senha:** `admin123`
+
+O usuário padrão é criado automaticamente na primeira inicialização do backend.
+
 ---
 
 # Estrutura do Projeto
@@ -88,7 +95,25 @@ npm run dev        # inicia frontend e backend em paralelo
 top-level package.json
 frontend/          # app React + Vite
 backend/           # servidor Node.js + Express
+backend/data/      # persistência JSON
 ```
+
+---
+
+# API principal
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/api/auth/login` | Autenticação |
+| GET | `/api/produtos` | Listar produtos |
+| POST | `/api/produtos` | Criar produto |
+| PUT | `/api/produtos/:id` | Atualizar produto |
+| DELETE | `/api/produtos/:id` | Excluir produto |
+| GET | `/api/movimentacoes` | Listar movimentações |
+| POST | `/api/movimentacoes` | Registrar entrada, venda ou ajuste |
+| GET | `/api/relatorios/resumo` | Métricas do dashboard |
+
+Rotas protegidas exigem header `Authorization: Bearer <token>`.
 
 ---
 
@@ -96,4 +121,5 @@ backend/           # servidor Node.js + Express
 
 - O frontend está em `frontend/`.
 - O backend está em `backend/`.
-- O banco de dados e a persistência de dados serão definidos conforme o desenvolvimento avançar.
+- Movimentações do tipo `VENDA`, `ENTRADA` e `AJUSTE` atualizam o estoque automaticamente.
+- Vendas com estoque insuficiente são rejeitadas pela API.

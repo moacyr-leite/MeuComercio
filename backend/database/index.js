@@ -5,11 +5,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const dataDir = join(__dirname, '../data');
-const databaseFile = join(dataDir, 'database.json');
+const databaseFile = process.env.DB_PATH || join(dataDir, 'database.json');
 
 const INITIAL_DATABASE = {
   produtos: [],
   movimentacoes: [],
+  usuarios: [],
 };
 
 export function getDatabasePath() {

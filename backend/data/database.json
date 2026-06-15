@@ -1,4 +1,44 @@
 {
-  "produtos": [],
-  "movimentacoes": []
+  "produtos": [
+    {
+      "codigoBarras": "123",
+      "nome": "Teste",
+      "quantidadeAtual": 8,
+      "precoCompra": 5,
+      "precoVenda": 8,
+      "criado_em": "2026-06-15T01:09:28.909Z",
+      "atualizado_em": "2026-06-15T01:09:44.464Z"
+    },
+    {
+      "codigoBarras": "52041715",
+      "nome": "nome teste",
+      "quantidadeAtual": 5,
+      "precoCompra": 10,
+      "precoVenda": 15,
+      "criado_em": "2026-06-15T01:12:48.804Z"
+    }
+  ],
+  "movimentacoes": [
+    {
+      "tipo": "VENDA",
+      "dataHora": "2026-06-15T01:09:44.461Z",
+      "itens": [
+        {
+          "produtoId": "undefined",
+          "quantidade": 2,
+          "precoUnitario": 8
+        }
+      ],
+      "criado_em": "2026-06-15T01:09:44.465Z"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": "ded51087-dac4-46dd-9cf6-506b9ec7ad63",
+      "nome": "Administrador",
+      "email": "admin@meucomercio.local",
+      "senhaHash": "$2b$10$MnV5e9zrvZ3acdBVXQl9Ue8vEkic60VhyyvtoJ16vmPa/imSPTHEu",
+      "criado_em": "2026-06-15T01:09:07.844Z"
+    }
+  ]
 }
