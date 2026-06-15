@@ -4,7 +4,8 @@
  */
 
 import { readFileSync, writeFileSync } from 'fs';
-import { initializeDatabase, getDatabasePath, SCHEMA } from '../database';
+import { randomUUID } from 'crypto';
+import { initializeDatabase, getDatabasePath } from '../database/index.js';
 
 let database = null;
 
@@ -78,7 +79,7 @@ function getById(tableName, id) {
   if (!database[tableName]) {
     throw new Error(`Tabela "${tableName}" não existe`);
   }
-  return database[tableName].find((item) => item.id === id);
+  return database[tableName].find((item) => String(item.id) === String(id));
 }
 
 /**
@@ -89,13 +90,8 @@ function insert(tableName, data) {
     throw new Error(`Tabela "${tableName}" não existe`);
   }
 
-  // Gerar ID único
-  const maxId = database[tableName].reduce((max, item) => {
-    return item.id > max ? item.id : max;
-  }, 0);
-
   const newRecord = {
-    id: maxId + 1,
+    id: String(randomUUID()),
     ...data,
     criado_em: new Date().toISOString(),
   };
@@ -114,7 +110,7 @@ function update(tableName, id, data) {
     throw new Error(`Tabela "${tableName}" não existe`);
   }
 
-  const index = database[tableName].findIndex((item) => item.id === id);
+  const index = database[tableName].findIndex((item) => String(item.id) === String(id));
   if (index === -1) {
     throw new Error(`Registro com ID ${id} não encontrado em "${tableName}"`);
   }
