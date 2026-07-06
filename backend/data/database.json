@@ -1,21 +1,23 @@
 {
   "produtos": [
     {
-      "codigoBarras": "123",
-      "nome": "Teste",
-      "quantidadeAtual": 8,
-      "precoCompra": 5,
-      "precoVenda": 8,
-      "criado_em": "2026-06-15T01:09:28.909Z",
-      "atualizado_em": "2026-06-15T01:09:44.464Z"
+      "id": "5db54f5e-7fe3-45c7-85e5-0bc8bf44c1e7",
+      "codigoBarras": "7896018703636",
+      "nome": "Toalhas Umedecidas 48 unid Huggies",
+      "quantidadeAtual": 9,
+      "precoCompra": 10,
+      "precoVenda": 12,
+      "criado_em": "2026-07-05T23:50:25.561Z",
+      "atualizado_em": "2026-07-06T00:20:51.816Z"
     },
     {
-      "codigoBarras": "52041715",
-      "nome": "nome teste",
-      "quantidadeAtual": 5,
-      "precoCompra": 10,
-      "precoVenda": 15,
-      "criado_em": "2026-06-15T01:12:48.804Z"
+      "id": "7ef2e73e-279e-4fc1-88e3-15be12ddbcc4",
+      "codigoBarras": "7896018703737",
+      "nome": "Toalhas Umedecidas 24 unid Huggies",
+      "quantidadeAtual": 4,
+      "precoCompra": 6,
+      "precoVenda": 10,
+      "criado_em": "2026-07-06T00:17:37.068Z"
     }
   ],
   "movimentacoes": [
@@ -29,7 +31,21 @@
           "precoUnitario": 8
         }
       ],
-      "criado_em": "2026-06-15T01:09:44.465Z"
+      "criado_em": "2026-06-15T01:09:44.465Z",
+      "id": "af94dd1b-cafd-45ed-b2d0-892b08c44bbf"
+    },
+    {
+      "id": "f329d305-42b1-43af-a054-f05229ee78d0",
+      "tipo": "ENTRADA",
+      "dataHora": "2026-07-06T00:20:51.788Z",
+      "itens": [
+        {
+          "produtoId": "5db54f5e-7fe3-45c7-85e5-0bc8bf44c1e7",
+          "quantidade": 5,
+          "precoUnitario": 12
+        }
+      ],
+      "criado_em": "2026-07-06T00:20:51.818Z"
     }
   ],
   "usuarios": [

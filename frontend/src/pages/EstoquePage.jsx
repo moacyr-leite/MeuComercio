@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Card from '../components/Card'
+import BarcodeInput from '../components/BarcodeInput'
 import ProdutoForm from '../components/ProdutoForm'
 import PagePane from './PagePane'
 import {
@@ -10,11 +11,22 @@ import {
   updateProduto,
 } from '../services/api.js'
 
-const EMPTY_ENTRADA = { produtoId: '', quantidade: '', precoUnitario: '' };
-const EMPTY_AJUSTE = { produtoId: '', quantidade: '' };
+const EMPTY_ENTRADA = { produtoId: '', produtoSearch: '', quantidade: '', precoUnitario: '' };
+const EMPTY_AJUSTE = { produtoId: '', produtoSearch: '', quantidade: '' };
 
 function formatCurrency(value) {
   return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function getProdutosCompatíveis(produtos, termo) {
+  const valor = termo?.trim().toLowerCase();
+  if (!valor) return [];
+
+  return produtos.filter((produto) => {
+    const nome = produto.nome?.toLowerCase() || '';
+    const codigo = produto.codigoBarras?.toLowerCase() || '';
+    return nome.includes(valor) || codigo.includes(valor) || codigo === valor;
+  });
 }
 
 function EstoquePage() {
@@ -84,6 +96,22 @@ function EstoquePage() {
     setAjusteForm(EMPTY_AJUSTE);
     setAjusteError(null);
     setModalMode('ajuste');
+  }
+
+  function handleProdutoSearchChange(setter, value) {
+    setter((prev) => ({
+      ...prev,
+      produtoSearch: value,
+      produtoId: '',
+    }));
+  }
+
+  function handleProdutoSelection(setter, produto) {
+    setter((prev) => ({
+      ...prev,
+      produtoId: produto.id,
+      produtoSearch: produto.nome,
+    }));
   }
 
   function closeModal() {
@@ -298,23 +326,24 @@ function EstoquePage() {
             {modalMode === 'entrada' && (
               <form className="user-form" onSubmit={handleEntradaSubmit}>
                 {entradaError && <p className="error-message">{entradaError}</p>}
-                <label>
-                  Produto
-                  <select
-                    value={entradaForm.produtoId}
-                    onChange={(event) =>
-                      setEntradaForm((prev) => ({ ...prev, produtoId: event.target.value }))
-                    }
-                    required
-                  >
-                    <option value="">Selecione...</option>
-                    {produtos.map((produto) => (
-                      <option key={produto.id} value={produto.id}>
-                        {produto.nome} ({produto.quantidadeAtual} unid.)
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <BarcodeInput
+                  label="Produto"
+                  value={entradaForm.produtoSearch}
+                  onChange={(value) => handleProdutoSearchChange(setEntradaForm, value)}
+                  onSelectSuggestion={(suggestion) => handleProdutoSelection(setEntradaForm, suggestion)}
+                  suggestions={getProdutosCompatíveis(produtos, entradaForm.produtoSearch).map((produto) => ({
+                    id: produto.id,
+                    label: `${produto.nome} (${produto.codigoBarras})`,
+                    ...produto,
+                  }))}
+                  emptyMessage="Nenhum produto compatível encontrado. Tente outro código ou nome."
+                  required
+                />
+                {entradaForm.produtoId && (
+                  <p className="card-text">
+                    Produto selecionado: {produtos.find((produto) => produto.id === entradaForm.produtoId)?.nome}
+                  </p>
+                )}
                 <label>
                   Quantidade
                   <input
@@ -355,23 +384,24 @@ function EstoquePage() {
             {modalMode === 'ajuste' && (
               <form className="user-form" onSubmit={handleAjusteSubmit}>
                 {ajusteError && <p className="error-message">{ajusteError}</p>}
-                <label>
-                  Produto
-                  <select
-                    value={ajusteForm.produtoId}
-                    onChange={(event) =>
-                      setAjusteForm((prev) => ({ ...prev, produtoId: event.target.value }))
-                    }
-                    required
-                  >
-                    <option value="">Selecione...</option>
-                    {produtos.map((produto) => (
-                      <option key={produto.id} value={produto.id}>
-                        {produto.nome} ({produto.quantidadeAtual} unid.)
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <BarcodeInput
+                  label="Produto"
+                  value={ajusteForm.produtoSearch}
+                  onChange={(value) => handleProdutoSearchChange(setAjusteForm, value)}
+                  onSelectSuggestion={(suggestion) => handleProdutoSelection(setAjusteForm, suggestion)}
+                  suggestions={getProdutosCompatíveis(produtos, ajusteForm.produtoSearch).map((produto) => ({
+                    id: produto.id,
+                    label: `${produto.nome} (${produto.codigoBarras})`,
+                    ...produto,
+                  }))}
+                  emptyMessage="Nenhum produto compatível encontrado. Tente outro código ou nome."
+                  required
+                />
+                {ajusteForm.produtoId && (
+                  <p className="card-text">
+                    Produto selecionado: {produtos.find((produto) => produto.id === ajusteForm.produtoId)?.nome}
+                  </p>
+                )}
                 <label>
                   Nova quantidade
                   <input

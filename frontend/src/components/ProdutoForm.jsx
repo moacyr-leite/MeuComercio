@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import BarcodeInput from './BarcodeInput';
 
 const EMPTY_FORM = {
   codigoBarras: '',
@@ -20,6 +21,10 @@ function ProdutoForm({ initialData, onSubmit, onCancel, submitting, submitLabel 
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  function handleBarcodeChange(value) {
+    setForm((prev) => ({ ...prev, codigoBarras: value }));
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     onSubmit({
@@ -33,16 +38,11 @@ function ProdutoForm({ initialData, onSubmit, onCancel, submitting, submitLabel 
 
   return (
     <form className="user-form" onSubmit={handleSubmit}>
-      <label>
-        Código de barras
-        <input
-          name="codigoBarras"
-          value={form.codigoBarras}
-          onChange={handleChange}
-          required
-          inputMode="numeric"
-        />
-      </label>
+      <BarcodeInput
+        value={form.codigoBarras}
+        onChange={handleBarcodeChange}
+        required
+      />
       <label>
         Nome do produto
         <input name="nome" value={form.nome} onChange={handleChange} required />

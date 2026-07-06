@@ -21,5 +21,8 @@
   "homepage": "https://github.com/moacyr-leite/MeuComercio#readme",
   "devDependencies": {
     "concurrently": "^10.0.3"
+  },
+  "dependencies": {
+    "react-qr-barcode-scanner": "^2.1.25"
   }
 }

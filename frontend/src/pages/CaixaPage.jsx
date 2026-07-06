@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Card from '../components/Card'
+import ScanCode from '../components/ScanCode'
 import PagePane from './PagePane'
 import { createMovimentacao, getMovimentacoes, getProdutos } from '../services/api.js'
 
@@ -201,139 +202,9 @@ function CaixaPage() {
 
       {!loading && !error && (
         <>
-          <Card
-            title="Caixa diário"
-            subtitle={formatCurrency(totalVendasHoje)}
-            description={
-              totalVendasHoje > 0
-                ? 'Vendas confirmadas hoje'
-                : 'Nenhuma venda registrada hoje'
-            }
-            imageLabel="CA"
-          />
-          <div className="dashboard-grid">
-            <Card
-              title="Entrada"
-              subtitle={formatCurrency(totalEntradasHoje)}
-              description="Compras registradas hoje"
-              imageLabel="EN"
-            />
-            <Card
-              title="Vendas"
-              subtitle={String(movimentacoesHoje.filter((mov) => mov.tipo === 'VENDA').length)}
-              description="Operações de venda hoje"
-              imageLabel="VD"
-            />
-          </div>
-
-          <input
-            className="search-input"
-            type="search"
-            placeholder="Buscar produto para vender..."
-            value={busca}
-            onChange={(event) => setBusca(event.target.value)}
-            aria-label="Buscar produto"
-          />
-
-          {busca && produtosFiltrados.length === 0 && (
-            <p className="status-message">Nenhum produto encontrado.</p>
-          )}
-
-          {produtosFiltrados.slice(0, 5).map((produto) => (
-            <button
-              key={produto.id}
-              type="button"
-              className="secondary-button"
-              onClick={() => adicionarAoCarrinho(produto)}
-            >
-              {produto.nome} · {formatCurrency(produto.precoVenda)} · {produto.quantidadeAtual} unid.
-            </button>
-          ))}
-
-          {vendaSuccess && !carrinho.length && (
-            <p className="success-message">{vendaSuccess}</p>
-          )}
-
-          {carrinho.length > 0 && (
-            <>
-              <h2 className="section-title">Carrinho</h2>
-              <div className="cart-list">
-                {carrinho.map((item) => (
-                  <div key={item.produtoId} className="cart-item">
-                    <div className="cart-item-info">
-                      <strong>{item.nome}</strong>
-                      <span>{formatCurrency(item.precoUnitario)} cada</span>
-                    </div>
-                    <div className="cart-item-actions">
-                      <div className="cart-qty-controls">
-                        <button
-                          type="button"
-                          className="cart-qty-button"
-                          onClick={() => alterarQuantidade(item.produtoId, -1)}
-                          aria-label={`Diminuir quantidade de ${item.nome}`}
-                        >
-                          −
-                        </button>
-                        <span className="cart-qty-value">{item.quantidade}</span>
-                        <button
-                          type="button"
-                          className="cart-qty-button"
-                          onClick={() => alterarQuantidade(item.produtoId, 1)}
-                          aria-label={`Aumentar quantidade de ${item.nome}`}
-                        >
-                          +
-                        </button>
-                      </div>
-                      <button
-                        type="button"
-                        className="text-button danger"
-                        onClick={() => removerDoCarrinho(item.produtoId)}
-                      >
-                        Remover
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="cart-total">
-                <span>Total</span>
-                <span>{formatCurrency(totalCarrinho)}</span>
-              </div>
-              {vendaError && <p className="error-message">{vendaError}</p>}
-              <div className="form-actions">
-                <button type="button" className="secondary-button" onClick={limparCarrinho} disabled={submitting}>
-                  Limpar carrinho
-                </button>
-                <button
-                  type="button"
-                  className="primary-button"
-                  onClick={confirmarVenda}
-                  disabled={submitting}
-                >
-                  {submitting ? 'Confirmando...' : 'Confirmar venda'}
-                </button>
-              </div>
-            </>
-          )}
-
-          <h2 className="section-title">Histórico recente</h2>
-          {historicoRecente.length === 0 ? (
-            <p className="status-message">Nenhuma movimentação registrada.</p>
-          ) : (
-            <div className="history-list">
-              {historicoRecente.map((mov) => (
-                <div key={mov.id} className="history-item">
-                  <div className="history-item-header">
-                    <span className={`history-badge ${mov.tipo.toLowerCase()}`}>{mov.tipo}</span>
-                    <strong>{formatCurrency(calcularTotalMovimentacao(mov))}</strong>
-                  </div>
-                  <p className="card-text">
-                    {new Date(mov.dataHora).toLocaleString('pt-BR')} · {mov.itens.length} item(ns)
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+          <button></button>
+          <button></button>
+          <ScanCode/>
         </>
       )}
     </PagePane>
