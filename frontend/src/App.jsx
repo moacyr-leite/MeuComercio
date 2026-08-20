@@ -3,7 +3,7 @@ import './styles/App.css'
 import SideMenu from './components/SideMenu'
 import DashboardPage from './pages/DashboardPage'
 import EstoquePage from './pages/EstoquePage'
-import CaixaPage from './pages/CaixaPage'
+import CaixaPage, { clearStoredCarrinho } from './pages/CaixaPage'
 import RelatoriosPage from './pages/RelatoriosPage'
 import LoginPage from './pages/LoginPage'
 import { validateSession } from './services/api.js'
@@ -19,6 +19,7 @@ function App() {
 
   useEffect(() => {
     function handleLogout() {
+      clearStoredCarrinho();
       setUsuario(null);
     }
 
@@ -58,6 +59,7 @@ function App() {
   function handleLogout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('authUser');
+    clearStoredCarrinho();
     setUsuario(null);
     setSettingsOpen(false);
   }
@@ -75,7 +77,6 @@ function App() {
   }
 
   const currentPage = pages.find((page) => page.id === activePage) || pages[0];
-  const ActivePage = currentPage.component;
 
   return (
     <div className="app-shell">
@@ -94,7 +95,15 @@ function App() {
             ☰
           </button>
         </header>
-        <ActivePage />
+        {pages.map((page) => {
+          const Page = page.component;
+          const isActive = page.id === activePage;
+          return (
+            <div key={page.id} hidden={!isActive}>
+              <Page isActive={isActive} />
+            </div>
+          );
+        })}
       </main>
 
       <nav className="bottom-nav" aria-label="Navegação principal">

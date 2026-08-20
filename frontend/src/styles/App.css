@@ -172,8 +172,14 @@
   gap: 10px;
 }
 
-.barcode-input-wrapper input {
+.barcode-input-wrapper input,
+.barcode-input-wrapper .search-input {
   flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
+.barcode-input-wrapper input {
   padding-right: 56px;
 }
 
